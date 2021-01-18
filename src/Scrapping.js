@@ -21,6 +21,13 @@ scrapping.start = async function() {
                 return price * 42.59;   // asumo que el dolar siempre está a ese precio xd :D
             }
 
+            function isAValidResult(titleArticle) {
+                // return true if the result is really a ps5
+                let title = titleArticle.toUpperCase().replaceAll(" ", "");
+                const words = ["PS5", "PLAYSTATION5"]
+                return title.search(words[0]) !== -1 || title.search(words[1]) !== -1;
+            }
+
             for (const child of olElement.childNodes)
             {
                 // const divContainer = document.querySelector(".ui-search-result__wrapper");
@@ -29,6 +36,10 @@ scrapping.start = async function() {
                 const titleElement = contentWrapper.childNodes[0].childNodes[0];   // element: <a href=""></a>
                 const link = titleElement.href;
                 const title = titleElement.childNodes[0].textContent;
+                if (isAValidResult(title)) {
+                    continue;
+                }
+
                 const soldByElement = contentWrapper.childNodes[0].childNodes[1].childNodes[0].textContent;
                 if (soldByElement === null || soldByElement === undefined) {
                     soldByElement = "Sin información del vendedor";
