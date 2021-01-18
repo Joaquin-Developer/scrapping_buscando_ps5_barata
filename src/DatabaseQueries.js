@@ -4,8 +4,12 @@ const connection = require("./ControllerDB");
 
 databaseQueries.createTable = function() {
     try {
-        const sqlQuery = `create table articles(
-            
+        const sqlQuery = `create table articles (
+            id int primary key not null auto_increment,
+            title varchar(255) not null default "Sin nombre",
+            soldBy varchar(255) not null default "sin datos",
+            price int not null, 
+            link varchar(255) not null default "Sin datos"
         )`;
         connection.query(sqlQuery, (error, result, fields) => {
             if (error) throw error;
