@@ -3,15 +3,19 @@ const puppeteer = require("puppeteer");
 const scrapping = {};
 
 scrapping.start = async function() {
+    let browser;
     try {
-        const browser = await puppeteer.launch({ headless: false });
+        browser = await puppeteer.launch({ headless: false });
         const page = await browser.newPage();
-        await page.setDefaultNavigationTimeout(0);
-        await page.goto("https://www.mercadolibre.com.uy/");
-        await page.click(".nav-search-input");
-        await page.keyboard.type("playstation 5");
-        await page.keyboard.press("Enter");
-        await page.waitForTimeout(6000);
+        page.setDefaultNavigationTimeout(0);
+        // await page.goto("https://www.mercadolibre.com.uy/");
+        // await page.click(".nav-search-input");
+        // await page.keyboard.type("playstation 5");
+        // await page.keyboard.press("Enter");
+        await page.goto("https://listado.mercadolibre.com.uy/playstation-5#D[A:playstation%205]");
+        await page.waitForTimeout(4000);
+        await page.waitForSelector("[ui-search-layout]");
+        console.log("Por entrar al evaluate()...");
         
         const data = await page.evaluate(() => {
             const olElement = document.querySelector(".ui-search-layout");
@@ -63,12 +67,13 @@ scrapping.start = async function() {
             }
             return infoScrapping;
         });
-
-        await browser.close();        
+        await browser.close();      
+        data.forEach(elem => console.log(elem));  
         return data;
 
     } catch (exception) {
         console.log(exception);
+        await browser.close();
     }
 }
 
