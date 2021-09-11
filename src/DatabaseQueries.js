@@ -2,7 +2,7 @@
 const databaseQueries = {};
 const connection = require("./ControllerDB");
 
-databaseQueries.createTable = function() {
+databaseQueries.createTable = () => {
     try {
         const sqlQuery = `create table articles (
             id int primary key not null auto_increment,
@@ -20,9 +20,9 @@ databaseQueries.createTable = function() {
     }
 }
 
-databaseQueries.insertAllArticles = function(data) {
+databaseQueries.insertAllArticles = data => {
     try {
-        for (article of data)
+        for (const article of data)
         {
             const sqlQuery = `insert into articles (id, title, soldBy, price, link) 
                 values (null, '${article.title}', '${article.soldBy}', ${article.price}, '${article.link}')`;

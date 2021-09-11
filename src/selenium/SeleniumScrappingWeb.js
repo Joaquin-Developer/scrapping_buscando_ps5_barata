@@ -1,4 +1,8 @@
-const {Builder, By, Key, until} = require('selenium-webdriver');
+/**
+ * Scrapping para usar con selenium y Firefox
+ */
+
+const { Builder, By, Key, until } = require('selenium-webdriver');
 
 (async () => {
     const driver = await new Builder().forBrowser('firefox').build();
@@ -8,8 +12,8 @@ const {Builder, By, Key, until} = require('selenium-webdriver');
         await driver.findElement(By.name('q')).sendKeys('cheese', Key.ENTER);
         const firstResult = await driver.wait(until.elementLocated(By.css('h3>div')), 10000);
         console.log(await firstResult.getAttribute('textContent'));
-    }
-    finally{
+
+    } finally {
         driver.quit();
     }
 })();

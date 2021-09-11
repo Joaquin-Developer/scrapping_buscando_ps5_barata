@@ -2,10 +2,11 @@
 const puppeteer = require("puppeteer");
 const scrapping = {};
 
-scrapping.start = async function() {
+scrapping.start = async ()=> {
     let browser;
     try {
-        browser = await puppeteer.launch({ headless: false });
+        // in false, show the chromium window:
+        browser = await puppeteer.launch({ headless: true });   
         const page = await browser.newPage();
         page.setDefaultNavigationTimeout(0);
         // await page.goto("https://www.mercadolibre.com.uy/");
@@ -19,13 +20,12 @@ scrapping.start = async function() {
         
         const data = await page.evaluate(() => {
             const olElement = document.querySelector(".ui-search-layout");
-            let infoScrapping = [];
+            const infoScrapping = [];
 
-            function convertDollarToPesosUy(price) {
-                return price * 42.59;   // asumo que el dolar siempre está a ese precio xd :D
-            }
+            // the ideal would be to obtain the current price from an API:
+            const convertDollarToPesosUy = price => price * 42.71;
 
-            function isAValidResult(titleArticle) {
+            const isAValidResult = titleArticle => {
                 // return true if the result is really a ps5
                 let title = titleArticle.toUpperCase().replaceAll(" ", "");
                 const words = ["PS5", "PLAYSTATION5"]
@@ -67,6 +67,7 @@ scrapping.start = async function() {
             }
             return infoScrapping;
         });
+
         await browser.close();      
         data.forEach(elem => console.log(elem));  
         return data;
